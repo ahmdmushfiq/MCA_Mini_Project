@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Main Style Sheet -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.13.1/css/all.css"
+      integrity="sha384-xxzQGERXS00kBmZW/6qxqJPyxW3UR0BPsL4c8ILaIWXva5kFi7TxkIIaMiKtqV1Q"
+      crossorigin="anonymous"
+    />
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <title>My Diary App</title>
+  </head>
+  <body>
+    <header><h1 class="title">My Personal Journal</h1></header>
+    <!-- <a class="btn btn-info right" href="calendar">Home</a> -->
+    <!-- Journal Entry Section -->
+    <section class="section journal-section">
+      <div class="container">
+        <div class="container-row container-row-journal">
+          <div class="container-item container-item-journal">
+            <form action="adddiary" method="post">
+              {% csrf_token %}
+              <label for="entry-title" class="journal-label">Entry Title</label>
+              <input
+                type="text"
+                name="title"
+                id="entry-title"
+                class="entry-text-title"
+                placeholder="Name of entry ✏️"
+              />
+              <label for="entry" class="journal-label">Today's Entry</label>
+              <textarea
+                name="entry"
+                id="textInput"
+                class="entry-text-box"
+                placeholder="What's on your mind today? 💭"
+              ></textarea>
+              <input class="btn-main entry-submit-btn" type="submit">
+            </form>
+            <button id="startRecording">Start Recording</button>
+            <!-- <form action="adddiary" id="entryForm"  method="post">
+              {% csrf_token %}
+              
+            </form> -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Journal Entry Results -->
+    <section class="section sectionEntryResults" id="entryResultsSection">
+      <div class="container">
+        <div class="container-row entryResultRow"></div>
+      </div>
+    </section>
+
+    <script src="{% static 'index.js' %}"></script>
+    <!-- <script>
+      const startRecordingBtn = document.getElementById('startRecording');
+      const textInput = document.getElementById('textInput');
+  
+      let recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
+      recognition.lang = 'en-US'; // Set language (change if necessary)
+  
+      startRecordingBtn.addEventListener('click', () => {
+        recognition.start();
+      });
+  
+      recognition.onresult = (event) => {
+        const speechToText = event.results[0][0].transcript;
+        textInput.value = speechToText;
+      };
+  
+    </script> -->
+    <script>
+      const startRecordingBtn = document.getElementById('startRecording');
+      const textInput = document.getElementById('textInput');
+  
+      let recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
+      
+      recognition.lang = 'en-US';
+      let ongoingContent = '';
+      startRecordingBtn.addEventListener('click', () => {
+          recognition.start();
+      });
+
+      recognition.onresult = (event) => {
+ 
+          const speechToText = event.results[0][0].transcript;
+  
+
+          ongoingContent += ' ' + speechToText;
+
+          textInput.value = ongoingContent;
+      };
+  </script>
+  </body>
+</html>
